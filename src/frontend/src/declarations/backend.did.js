@@ -34,20 +34,12 @@ export const idlService = IDL.Service({
       [],
     ),
   'deleteAdditive' : IDL.Func([IDL.Nat], [IDL.Bool], []),
-  'filterAdditivesByCategory' : IDL.Func(
-      [IDL.Text],
-      [IDL.Vec(Additive)],
-      ['query'],
-    ),
-  'getAdditiveByENumber' : IDL.Func([IDL.Text], [Additive], ['query']),
-  'getAdditiveById' : IDL.Func([IDL.Nat], [Additive], ['query']),
-  'getAllAdditives' : IDL.Func([], [IDL.Vec(Additive)], ['query']),
-  'parseIngredients' : IDL.Func([IDL.Text], [IDL.Vec(Additive)], ['query']),
-  'searchAdditivesByName' : IDL.Func(
-      [IDL.Text],
-      [IDL.Vec(Additive)],
-      ['query'],
-    ),
+  'filterAdditivesByCategory' : IDL.Func([IDL.Text], [IDL.Vec(Additive)], []),
+  'getAdditiveByENumber' : IDL.Func([IDL.Text], [Additive], []),
+  'getAdditiveById' : IDL.Func([IDL.Nat], [Additive], []),
+  'getAllAdditives' : IDL.Func([], [IDL.Vec(Additive)], []),
+  'parseIngredients' : IDL.Func([IDL.Text], [IDL.Vec(Additive)], []),
+  'searchAdditivesByName' : IDL.Func([IDL.Text], [IDL.Vec(Additive)], []),
   'updateAdditive' : IDL.Func(
       [
         IDL.Nat,
@@ -93,20 +85,12 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'deleteAdditive' : IDL.Func([IDL.Nat], [IDL.Bool], []),
-    'filterAdditivesByCategory' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(Additive)],
-        ['query'],
-      ),
-    'getAdditiveByENumber' : IDL.Func([IDL.Text], [Additive], ['query']),
-    'getAdditiveById' : IDL.Func([IDL.Nat], [Additive], ['query']),
-    'getAllAdditives' : IDL.Func([], [IDL.Vec(Additive)], ['query']),
-    'parseIngredients' : IDL.Func([IDL.Text], [IDL.Vec(Additive)], ['query']),
-    'searchAdditivesByName' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(Additive)],
-        ['query'],
-      ),
+    'filterAdditivesByCategory' : IDL.Func([IDL.Text], [IDL.Vec(Additive)], []),
+    'getAdditiveByENumber' : IDL.Func([IDL.Text], [Additive], []),
+    'getAdditiveById' : IDL.Func([IDL.Nat], [Additive], []),
+    'getAllAdditives' : IDL.Func([], [IDL.Vec(Additive)], []),
+    'parseIngredients' : IDL.Func([IDL.Text], [IDL.Vec(Additive)], []),
+    'searchAdditivesByName' : IDL.Func([IDL.Text], [IDL.Vec(Additive)], []),
     'updateAdditive' : IDL.Func(
         [
           IDL.Nat,

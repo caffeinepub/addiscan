@@ -23,6 +23,7 @@ export function getConcernLevel(healthEffects: string): ConcernLevel {
     "linked to cancer",
     "mutagen",
     "teratogen",
+    "potentially carcinogenic",
   ];
 
   const moderateKeywords = [
@@ -39,6 +40,7 @@ export function getConcernLevel(healthEffects: string): ConcernLevel {
     "may cause",
     "linked to",
     "potential",
+    "digestive issues",
   ];
 
   if (highKeywords.some((k) => text.includes(k))) return "high";
@@ -51,7 +53,7 @@ export function getConcernLabel(level: ConcernLevel): string {
     case "high":
       return "High Concern";
     case "moderate":
-      return "Moderate Concern";
+      return "Moderate";
     case "safe":
       return "Generally Safe";
   }
@@ -68,30 +70,23 @@ export function getConcernClasses(level: ConcernLevel): string {
   }
 }
 
+// Category color map — tailored for dark theme with subtle tints
 const CATEGORY_COLORS: Record<string, string> = {
-  preservative:
-    "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300",
-  colorant:
-    "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300",
-  colour:
-    "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300",
-  sweetener: "bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300",
-  emulsifier:
-    "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
-  thickener: "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300",
-  stabilizer:
-    "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300",
+  preservative: "bg-amber-500/10 text-amber-400 border border-amber-500/20",
+  colorant: "bg-violet-500/10 text-violet-400 border border-violet-500/20",
+  colour: "bg-violet-500/10 text-violet-400 border border-violet-500/20",
+  sweetener: "bg-pink-500/10 text-pink-400 border border-pink-500/20",
+  emulsifier: "bg-sky-500/10 text-sky-400 border border-sky-500/20",
+  thickener: "bg-teal-500/10 text-teal-400 border border-teal-500/20",
+  stabilizer: "bg-teal-500/10 text-teal-400 border border-teal-500/20",
   antioxidant:
-    "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
-  flavour:
-    "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300",
-  flavor:
-    "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300",
-  acidulant:
-    "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
-  acid: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
-  leavening: "bg-lime-100 text-lime-800 dark:bg-lime-900/30 dark:text-lime-300",
-  humectant: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300",
+    "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+  flavour: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
+  flavor: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
+  acidulant: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
+  acid: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
+  leavening: "bg-lime-500/10 text-lime-400 border border-lime-500/20",
+  humectant: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
 };
 
 export function getCategoryColor(category: string): string {
@@ -99,5 +94,5 @@ export function getCategoryColor(category: string): string {
   for (const [k, v] of Object.entries(CATEGORY_COLORS)) {
     if (key.includes(k)) return v;
   }
-  return "bg-secondary text-secondary-foreground";
+  return "bg-slate-500/10 text-slate-400 border border-slate-500/20";
 }

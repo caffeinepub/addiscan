@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Additive } from "../backend";
+import { DEFAULT_ADDITIVES } from "../lib/seed-data";
 import { useActor } from "./useActor";
 
 export function useGetAllAdditives() {
@@ -9,10 +10,31 @@ export function useGetAllAdditives() {
     queryKey: ["additives", "all"],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getAllAdditives();
+      let all = await actor.getAllAdditives();
+
+      // Auto-seed if the database is empty
+      if (all.length === 0) {
+        await Promise.all(
+          DEFAULT_ADDITIVES.map((a) =>
+            actor.addAdditive(
+              a.name,
+              a.eNumber,
+              a.category,
+              a.description,
+              a.healthEffects,
+              a.commonProducts,
+              a.alternatives,
+            ),
+          ),
+        );
+        all = await actor.getAllAdditives();
+      }
+
+      return all;
     },
     enabled: !!actor && !isFetching,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
+    gcTime: 0,
   });
 }
 

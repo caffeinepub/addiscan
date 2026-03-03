@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -25,10 +32,10 @@ import {
   FlaskConical,
   Leaf,
   Loader2,
+  OctagonAlert,
   Pencil,
   Plus,
   Settings2,
-  ShieldAlert,
   Trash2,
   X,
 } from "lucide-react";
@@ -44,7 +51,18 @@ import {
 import { getCategoryColor } from "../lib/additive-utils";
 import { cn } from "../lib/utils";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+const CATEGORIES = [
+  "Preservative",
+  "Colorant",
+  "Flavor Enhancer",
+  "Sweetener",
+  "Thickener",
+  "Antioxidant",
+  "Emulsifier",
+  "Other",
+];
+
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 interface AdditiveFormData {
   name: string;
@@ -85,26 +103,17 @@ function parseCommaSeparated(raw: string): string[] {
     .filter(Boolean);
 }
 
-// ─── Tag chip ────────────────────────────────────────────────────────────────
+// ─── Tag Preview ──────────────────────────────────────────────────────────────
 
-function TagChipList({
-  raw,
-  placeholder,
-}: { raw: string; placeholder?: string }) {
+function TagPreview({ raw }: { raw: string }) {
   const tags = parseCommaSeparated(raw);
-  if (!raw.trim()) {
-    return (
-      <span className="text-muted-foreground text-xs italic">
-        {placeholder ?? "none"}
-      </span>
-    );
-  }
+  if (!raw.trim()) return null;
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex flex-wrap gap-1 mt-1.5">
       {tags.map((tag) => (
         <span
           key={tag}
-          className="inline-block text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md"
+          className="inline-block text-xs bg-muted/50 text-muted-foreground px-2 py-0.5 rounded-sm"
         >
           {tag}
         </span>
@@ -113,7 +122,7 @@ function TagChipList({
   );
 }
 
-// ─── Form Dialog ─────────────────────────────────────────────────────────────
+// ─── Form Dialog ──────────────────────────────────────────────────────────────
 
 interface FormDialogProps {
   open: boolean;
@@ -131,10 +140,7 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
 
   const addMutation = useAddAdditive();
   const updateMutation = useUpdateAdditive();
-
   const isPending = addMutation.isPending || updateMutation.isPending;
-
-  // Keep form in sync when editTarget changes
   const key = editTarget ? String(editTarget.id) : "new";
 
   function validate(): boolean {
@@ -186,9 +192,9 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()} key={key}>
-      <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto bg-card border-border">
         <DialogHeader>
-          <DialogTitle className="font-display text-lg flex items-center gap-2">
+          <DialogTitle className="font-display text-base flex items-center gap-2">
             {editTarget ? (
               <>
                 <Pencil className="w-4 h-4 text-primary" />
@@ -201,17 +207,17 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
               </>
             )}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-xs">
             {editTarget
-              ? `Editing "${editTarget.name}". Changes will be saved to the database.`
-              : "Fill in the fields below to add a new additive to the database."}
+              ? `Editing "${editTarget.name}". Changes are reflected immediately.`
+              : "Fill in the details below to add a new additive to the database."}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 pt-1">
           {/* Name */}
           <div className="space-y-1.5">
-            <Label htmlFor="admin-name">
+            <Label htmlFor="admin-name" className="text-xs font-semibold">
               Name <span className="text-destructive">*</span>
             </Label>
             <Input
@@ -220,46 +226,68 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
               value={form.name}
               onChange={field("name")}
               placeholder="e.g. Sodium Benzoate"
-              className={cn(errors.name && "border-destructive")}
+              className={cn(
+                "text-sm bg-background/50",
+                errors.name &&
+                  "border-destructive focus-visible:ring-destructive",
+              )}
               autoFocus
             />
             {errors.name && (
               <p className="text-xs text-destructive flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" />
-                {errors.name}
+                <AlertCircle className="w-3 h-3" /> {errors.name}
               </p>
             )}
           </div>
 
-          {/* E-Number + Category row */}
+          {/* E-Number + Category */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="admin-enumber">E-Number</Label>
+              <Label htmlFor="admin-enumber" className="text-xs font-semibold">
+                E-Number
+              </Label>
               <Input
                 id="admin-enumber"
                 data-ocid="admin.form.enumber_input"
                 value={form.eNumber}
                 onChange={field("eNumber")}
                 placeholder="e.g. E211"
-                className="font-mono"
+                className="font-mono text-sm bg-background/50"
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="admin-category">
+              <Label htmlFor="admin-category" className="text-xs font-semibold">
                 Category <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="admin-category"
-                data-ocid="admin.form.category_input"
+              <Select
                 value={form.category}
-                onChange={field("category")}
-                placeholder="e.g. Preservative"
-                className={cn(errors.category && "border-destructive")}
-              />
+                onValueChange={(val) => {
+                  setForm((prev) => ({ ...prev, category: val }));
+                  if (errors.category)
+                    setErrors((prev) => ({ ...prev, category: undefined }));
+                }}
+              >
+                <SelectTrigger
+                  id="admin-category"
+                  data-ocid="admin.form.category_select"
+                  className={cn(
+                    "text-sm bg-background/50",
+                    errors.category && "border-destructive",
+                  )}
+                >
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CATEGORIES.map((cat) => (
+                    <SelectItem key={cat} value={cat} className="text-sm">
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               {errors.category && (
                 <p className="text-xs text-destructive flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  {errors.category}
+                  <AlertCircle className="w-3 h-3" /> {errors.category}
                 </p>
               )}
             </div>
@@ -267,7 +295,10 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
 
           {/* Description */}
           <div className="space-y-1.5">
-            <Label htmlFor="admin-description">
+            <Label
+              htmlFor="admin-description"
+              className="text-xs font-semibold"
+            >
               Description <span className="text-destructive">*</span>
             </Label>
             <Textarea
@@ -277,60 +308,66 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
               onChange={field("description")}
               placeholder="What is this additive and what does it do?"
               rows={3}
-              className={cn(errors.description && "border-destructive")}
+              className={cn(
+                "text-sm resize-none bg-background/50",
+                errors.description && "border-destructive",
+              )}
             />
             {errors.description && (
               <p className="text-xs text-destructive flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" />
-                {errors.description}
+                <AlertCircle className="w-3 h-3" /> {errors.description}
               </p>
             )}
           </div>
 
           {/* Health Effects */}
           <div className="space-y-1.5">
-            <Label htmlFor="admin-health">
+            <Label htmlFor="admin-health" className="text-xs font-semibold">
               Health Effects <span className="text-destructive">*</span>
             </Label>
             <Textarea
               id="admin-health"
-              data-ocid="admin.form.health_effects_textarea"
+              data-ocid="admin.form.healtheffects_textarea"
               value={form.healthEffects}
               onChange={field("healthEffects")}
               placeholder="Describe known health effects, concerns, or safety information…"
               rows={3}
-              className={cn(errors.healthEffects && "border-destructive")}
+              className={cn(
+                "text-sm resize-none bg-background/50",
+                errors.healthEffects && "border-destructive",
+              )}
             />
             {errors.healthEffects && (
               <p className="text-xs text-destructive flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" />
-                {errors.healthEffects}
+                <AlertCircle className="w-3 h-3" /> {errors.healthEffects}
               </p>
             )}
           </div>
 
           {/* Common Products */}
           <div className="space-y-1.5">
-            <Label htmlFor="admin-common-products">Common Products</Label>
+            <Label
+              htmlFor="admin-common-products"
+              className="text-xs font-semibold"
+            >
+              Common Products
+            </Label>
             <Input
               id="admin-common-products"
-              data-ocid="admin.form.common_products_input"
+              data-ocid="admin.form.commonproducts_input"
               value={form.commonProductsRaw}
               onChange={field("commonProductsRaw")}
-              placeholder="Soft drinks, Bread, Salad dressings (comma-separated)"
+              placeholder="Soft drinks, Bread, Pickles (comma-separated)"
+              className="text-sm bg-background/50"
             />
-            {form.commonProductsRaw.trim() && (
-              <div className="pt-1">
-                <TagChipList raw={form.commonProductsRaw} />
-              </div>
-            )}
+            <TagPreview raw={form.commonProductsRaw} />
           </div>
 
           {/* Alternatives */}
           <div className="space-y-1.5">
             <Label
               htmlFor="admin-alternatives"
-              className="flex items-center gap-1.5"
+              className="text-xs font-semibold flex items-center gap-1.5"
             >
               <Leaf className="w-3.5 h-3.5 text-safe" />
               Alternatives
@@ -341,12 +378,9 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
               value={form.alternativesRaw}
               onChange={field("alternativesRaw")}
               placeholder="Rosemary extract, Vitamin C, Sea salt (comma-separated)"
+              className="text-sm bg-background/50"
             />
-            {form.alternativesRaw.trim() && (
-              <div className="pt-1">
-                <TagChipList raw={form.alternativesRaw} />
-              </div>
-            )}
+            <TagPreview raw={form.alternativesRaw} />
             <p className="text-xs text-muted-foreground">
               Natural or safer alternatives to this additive.
             </p>
@@ -359,6 +393,7 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
               onClick={onClose}
               disabled={isPending}
               data-ocid="admin.form.cancel_button"
+              size="sm"
             >
               Cancel
             </Button>
@@ -366,10 +401,11 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
               type="submit"
               disabled={isPending}
               data-ocid="admin.form.submit_button"
+              size="sm"
             >
               {isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
                   {editTarget ? "Saving…" : "Adding…"}
                 </>
               ) : editTarget ? (
@@ -385,7 +421,7 @@ function FormDialog({ open, onClose, editTarget }: FormDialogProps) {
   );
 }
 
-// ─── Delete Confirmation Dialog ───────────────────────────────────────────────
+// ─── Delete Confirmation ──────────────────────────────────────────────────────
 
 interface DeleteDialogProps {
   target: Additive | null;
@@ -408,13 +444,16 @@ function DeleteDialog({ target, onClose }: DeleteDialogProps) {
 
   return (
     <Dialog open={!!target} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent data-ocid="admin.delete_dialog" className="max-w-sm">
+      <DialogContent
+        data-ocid="admin.dialog"
+        className="max-w-sm bg-card border-border"
+      >
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-destructive font-display">
-            <ShieldAlert className="w-5 h-5" />
+          <DialogTitle className="flex items-center gap-2 text-destructive font-display text-base">
+            <OctagonAlert className="w-4 h-4" />
             Delete Additive
           </DialogTitle>
-          <DialogDescription className="pt-1">
+          <DialogDescription className="text-xs pt-1">
             Are you sure you want to delete{" "}
             <span className="font-semibold text-foreground">
               "{target?.name}"
@@ -427,7 +466,8 @@ function DeleteDialog({ target, onClose }: DeleteDialogProps) {
             variant="outline"
             onClick={onClose}
             disabled={deleteMutation.isPending}
-            data-ocid="admin.delete_dialog.cancel_button"
+            data-ocid="admin.delete_cancel_button"
+            size="sm"
           >
             Cancel
           </Button>
@@ -435,16 +475,17 @@ function DeleteDialog({ target, onClose }: DeleteDialogProps) {
             variant="destructive"
             onClick={handleConfirm}
             disabled={deleteMutation.isPending}
-            data-ocid="admin.delete_dialog.confirm_button"
+            data-ocid="admin.delete_confirm_button"
+            size="sm"
           >
             {deleteMutation.isPending ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
                 Deleting…
               </>
             ) : (
               <>
-                <Trash2 className="mr-2 h-4 w-4" />
+                <Trash2 className="mr-1.5 h-3.5 w-3.5" />
                 Delete
               </>
             )}
@@ -480,28 +521,28 @@ export function AdminPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Page header */}
-      <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      {/* Header */}
+      <div className="mb-7 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-            <Settings2 className="w-4 h-4" />
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full mb-4">
+            <Settings2 className="w-3.5 h-3.5" />
             Admin
           </div>
-          <h1 className="font-display font-bold text-3xl sm:text-4xl text-foreground mb-2">
+          <h1 className="font-display font-bold text-3xl sm:text-4xl text-foreground mb-2 tracking-tight">
             Manage Additives
           </h1>
-          <p className="text-muted-foreground text-base leading-relaxed max-w-xl">
-            Add, edit, or remove food additives from the database. Changes are
-            reflected immediately across the app.
+          <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
+            Add, edit, or remove food additives. Changes are reflected
+            immediately across the app.
           </p>
         </div>
         <Button
           onClick={openAddForm}
-          size="lg"
-          className="flex-shrink-0 gap-2"
+          size="sm"
+          className="gap-1.5 flex-shrink-0"
           data-ocid="admin.add_button"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-3.5 h-3.5" />
           Add Additive
         </Button>
       </div>
@@ -510,10 +551,10 @@ export function AdminPage() {
       {isLoading && (
         <div
           data-ocid="admin.loading_state"
-          className="space-y-3 bg-card rounded-2xl border border-border p-4"
+          className="space-y-2 bg-card rounded-xl border border-border p-4"
         >
           {["a", "b", "c", "d", "e", "f"].map((k) => (
-            <Skeleton key={k} className="h-14 w-full rounded-lg" />
+            <Skeleton key={k} className="h-12 w-full rounded-md" />
           ))}
         </div>
       )}
@@ -522,13 +563,13 @@ export function AdminPage() {
       {isError && !isLoading && (
         <div
           data-ocid="admin.error_state"
-          className="rounded-2xl border border-destructive/30 bg-destructive/5 p-8 text-center"
+          className="rounded-xl border border-destructive/20 bg-destructive/5 p-8 text-center"
         >
-          <AlertCircle className="w-10 h-10 text-destructive/60 mx-auto mb-3" />
-          <p className="font-semibold text-destructive">
-            Failed to load additives.
+          <AlertCircle className="w-8 h-8 text-destructive/50 mx-auto mb-3" />
+          <p className="font-semibold text-sm text-destructive mb-1">
+            Failed to load additives
           </p>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-xs text-muted-foreground">
             Check your connection and refresh the page.
           </p>
         </div>
@@ -538,19 +579,22 @@ export function AdminPage() {
       {!isLoading && !isError && additives.length === 0 && (
         <div
           data-ocid="admin.empty_state"
-          className="rounded-2xl border border-dashed border-border bg-card p-12 text-center"
+          className="rounded-xl border border-dashed border-border bg-card p-12 text-center"
         >
-          <FlaskConical className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-          <p className="font-semibold text-foreground mb-1">No additives yet</p>
-          <p className="text-sm text-muted-foreground mb-6">
+          <FlaskConical className="w-10 h-10 text-muted-foreground/20 mx-auto mb-4" />
+          <p className="font-semibold text-sm text-foreground mb-1">
+            No additives yet
+          </p>
+          <p className="text-xs text-muted-foreground mb-5">
             Add your first food additive to get started.
           </p>
           <Button
             onClick={openAddForm}
             variant="outline"
+            size="sm"
             data-ocid="admin.add_button"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-3.5 h-3.5 mr-1.5" />
             Add First Additive
           </Button>
         </div>
@@ -558,24 +602,24 @@ export function AdminPage() {
 
       {/* Table */}
       {!isLoading && !isError && additives.length > 0 && (
-        <div className="bg-card rounded-2xl border border-border shadow-card overflow-hidden">
-          <div className="px-5 py-4 border-b border-border flex items-center justify-between">
-            <span className="text-sm font-semibold text-foreground">
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
+          <div className="px-5 py-3 border-b border-border/60 flex items-center justify-between">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
               {additives.length} additive{additives.length !== 1 ? "s" : ""} in
               database
             </span>
           </div>
 
           <div className="overflow-x-auto">
-            <Table data-ocid="admin.table">
+            <Table data-ocid="admin.list">
               <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead className="w-[200px]">Name</TableHead>
-                  <TableHead className="w-[100px]">E-Number</TableHead>
-                  <TableHead className="w-[130px]">Category</TableHead>
-                  <TableHead>Common Products</TableHead>
-                  <TableHead>Alternatives</TableHead>
-                  <TableHead className="w-[110px] text-right">
+                <TableRow className="hover:bg-transparent border-border/60">
+                  <TableHead className="text-xs w-[180px]">Name</TableHead>
+                  <TableHead className="text-xs w-[90px]">E-Number</TableHead>
+                  <TableHead className="text-xs w-[120px]">Category</TableHead>
+                  <TableHead className="text-xs">Common Products</TableHead>
+                  <TableHead className="text-xs">Alternatives</TableHead>
+                  <TableHead className="text-xs w-[80px] text-right">
                     Actions
                   </TableHead>
                 </TableRow>
@@ -585,81 +629,87 @@ export function AdminPage() {
                   <TableRow
                     key={Number(additive.id)}
                     data-ocid={`admin.item.${index + 1}`}
-                    className="group"
+                    className="group border-border/40"
                   >
-                    <TableCell className="font-medium text-foreground">
+                    <TableCell className="font-medium text-sm text-foreground py-3">
                       {additive.name}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-3">
                       {additive.eNumber ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-mono text-muted-foreground bg-muted px-2 py-1 rounded-md">
-                          <FlaskConical className="w-3 h-3" />
+                        <span className="inline-flex items-center gap-0.5 text-xs font-mono text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded-sm">
+                          <FlaskConical className="w-2.5 h-2.5" />
                           {additive.eNumber}
                         </span>
                       ) : (
-                        <span className="text-muted-foreground text-xs">—</span>
+                        <span className="text-muted-foreground/40 text-xs">
+                          —
+                        </span>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-3">
                       <Badge
                         variant="secondary"
                         className={cn(
-                          "text-xs font-medium",
+                          "text-xs font-medium py-0.5",
                           getCategoryColor(additive.category),
                         )}
                       >
                         {additive.category}
                       </Badge>
                     </TableCell>
-                    <TableCell className="max-w-[160px]">
+                    <TableCell className="max-w-[160px] py-3">
                       {additive.commonProducts.length > 0 ? (
                         <div className="flex flex-wrap gap-1">
                           {additive.commonProducts.slice(0, 2).map((p) => (
                             <span
                               key={p}
-                              className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-sm"
+                              className="text-xs bg-muted/40 text-muted-foreground px-1.5 py-0.5 rounded-sm"
                             >
                               {p}
                             </span>
                           ))}
                           {additive.commonProducts.length > 2 && (
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-xs text-muted-foreground/50">
                               +{additive.commonProducts.length - 2}
                             </span>
                           )}
                         </div>
                       ) : (
-                        <span className="text-muted-foreground text-xs">—</span>
+                        <span className="text-muted-foreground/40 text-xs">
+                          —
+                        </span>
                       )}
                     </TableCell>
-                    <TableCell className="max-w-[160px]">
+                    <TableCell className="max-w-[160px] py-3">
                       {additive.alternatives.length > 0 ? (
                         <div className="flex flex-wrap gap-1">
                           {additive.alternatives.slice(0, 2).map((alt) => (
                             <span
                               key={alt}
-                              className="text-xs bg-safe/10 text-safe-fg px-2 py-0.5 rounded-sm"
+                              className="text-xs concern-safe px-1.5 py-0.5 rounded-sm"
                             >
                               {alt}
                             </span>
                           ))}
                           {additive.alternatives.length > 2 && (
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-xs text-muted-foreground/50">
                               +{additive.alternatives.length - 2}
                             </span>
                           )}
                         </div>
                       ) : (
-                        <span className="text-muted-foreground text-xs">—</span>
+                        <span className="text-muted-foreground/40 text-xs">
+                          —
+                        </span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-1">
+                    <TableCell className="text-right py-3">
+                      <div className="flex items-center justify-end gap-0.5">
                         <Button
                           variant="ghost"
                           size="icon"
                           onClick={() => openEditForm(additive)}
-                          className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                          className="h-7 w-7 text-muted-foreground hover:text-foreground"
                           data-ocid={`admin.edit_button.${index + 1}`}
                           aria-label={`Edit ${additive.name}`}
                         >
@@ -669,7 +719,7 @@ export function AdminPage() {
                           variant="ghost"
                           size="icon"
                           onClick={() => setDeleteTarget(additive)}
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                          className="h-7 w-7 text-muted-foreground hover:text-destructive"
                           data-ocid={`admin.delete_button.${index + 1}`}
                           aria-label={`Delete ${additive.name}`}
                         >

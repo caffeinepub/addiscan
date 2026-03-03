@@ -1,4 +1,4 @@
-import { Shield, ShieldAlert, ShieldCheck, Sparkles } from "lucide-react";
+import { OctagonAlert, Shield, ShieldCheck } from "lucide-react";
 import type { Additive } from "../backend";
 import { getConcernLevel } from "../lib/additive-utils";
 
@@ -9,16 +9,19 @@ interface ResultsSummaryProps {
 export function ResultsSummary({ additives }: ResultsSummaryProps) {
   if (additives.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 px-6 text-center animate-fade-in">
-        <div className="w-16 h-16 rounded-full bg-safe-bg flex items-center justify-center mb-4">
-          <ShieldCheck className="w-8 h-8 text-safe" />
+      <div
+        className="flex flex-col items-center justify-center py-10 px-6 text-center animate-fade-in bg-safe-bg/30 rounded-lg border border-safe/20 mb-6"
+        data-ocid="scan.results.empty_state"
+      >
+        <div className="w-12 h-12 rounded-full bg-safe/10 border border-safe/20 flex items-center justify-center mb-3">
+          <ShieldCheck className="w-6 h-6 text-safe" />
         </div>
-        <h3 className="font-display font-semibold text-lg text-foreground mb-2">
-          No Known Additives Detected
+        <h3 className="font-display font-semibold text-base text-foreground mb-1">
+          No Known Additives Found
         </h3>
-        <p className="text-sm text-muted-foreground max-w-sm">
-          Great news! We didn't find any recognized additives or preservatives
-          in the ingredient list you provided.
+        <p className="text-sm text-muted-foreground max-w-xs">
+          We didn't find any recognized additives or preservatives in this
+          ingredient list.
         </p>
       </div>
     );
@@ -37,28 +40,27 @@ export function ResultsSummary({ additives }: ResultsSummaryProps) {
   const overallLevel =
     highCount > 0 ? "high" : moderateCount > 0 ? "moderate" : "safe";
 
+  const summaryBg =
+    overallLevel === "high"
+      ? "bg-high-bg/40 border-high/20"
+      : overallLevel === "moderate"
+        ? "bg-moderate-bg/40 border-moderate/20"
+        : "bg-safe-bg/30 border-safe/20";
+
   return (
-    <div
-      className={`rounded-xl p-4 sm:p-5 mb-6 animate-fade-in border ${
-        overallLevel === "high"
-          ? "bg-high-bg border-high/20"
-          : overallLevel === "moderate"
-            ? "bg-moderate-bg border-moderate/20"
-            : "bg-safe-bg border-safe/20"
-      }`}
-    >
+    <div className={`rounded-lg border ${summaryBg} p-4 mb-5 animate-fade-in`}>
       <div className="flex items-center gap-3 mb-4">
         <div
-          className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+          className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 ${
             overallLevel === "high"
-              ? "bg-high/20"
+              ? "bg-high/15"
               : overallLevel === "moderate"
-                ? "bg-moderate/20"
-                : "bg-safe/20"
+                ? "bg-moderate/15"
+                : "bg-safe/15"
           }`}
         >
           {overallLevel === "high" ? (
-            <ShieldAlert className="w-5 h-5 text-high" />
+            <OctagonAlert className="w-5 h-5 text-high" />
           ) : overallLevel === "moderate" ? (
             <Shield className="w-5 h-5 text-moderate" />
           ) : (
@@ -66,42 +68,51 @@ export function ResultsSummary({ additives }: ResultsSummaryProps) {
           )}
         </div>
         <div>
-          <h3 className="font-display font-semibold text-foreground">
-            {additives.length} Additive{additives.length !== 1 ? "s" : ""} Found
+          <h3 className="font-display font-semibold text-sm text-foreground">
+            {additives.length} Additive{additives.length !== 1 ? "s" : ""}{" "}
+            Detected
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs text-muted-foreground mt-0.5">
             {overallLevel === "high"
               ? "Contains ingredients of high concern"
               : overallLevel === "moderate"
                 ? "Contains ingredients worth noting"
-                : "All detected additives are generally safe"}
+                : "All detected additives are generally considered safe"}
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-card/60 rounded-lg p-3 text-center">
-          <div className="text-2xl font-display font-bold text-high">
-            {highCount}
+      <div className="grid grid-cols-3 gap-2">
+        {[
+          {
+            count: highCount,
+            label: "High Concern",
+            textColor: "text-high",
+            bgColor: "bg-high/10 border-high/20",
+          },
+          {
+            count: moderateCount,
+            label: "Moderate",
+            textColor: "text-moderate",
+            bgColor: "bg-moderate/10 border-moderate/20",
+          },
+          {
+            count: safeCount,
+            label: "Safe",
+            textColor: "text-safe",
+            bgColor: "bg-safe/10 border-safe/20",
+          },
+        ].map(({ count, label, textColor, bgColor }) => (
+          <div
+            key={label}
+            className={`rounded-md p-2.5 text-center border ${bgColor}`}
+          >
+            <div className={`text-xl font-display font-bold ${textColor}`}>
+              {count}
+            </div>
+            <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
           </div>
-          <div className="text-xs text-muted-foreground mt-0.5">
-            High Concern
-          </div>
-        </div>
-        <div className="bg-card/60 rounded-lg p-3 text-center">
-          <div className="text-2xl font-display font-bold text-moderate">
-            {moderateCount}
-          </div>
-          <div className="text-xs text-muted-foreground mt-0.5">Moderate</div>
-        </div>
-        <div className="bg-card/60 rounded-lg p-3 text-center">
-          <div className="text-2xl font-display font-bold text-safe">
-            {safeCount}
-          </div>
-          <div className="text-xs text-muted-foreground mt-0.5">
-            Generally Safe
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

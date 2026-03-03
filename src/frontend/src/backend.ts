@@ -106,7 +106,7 @@ export interface backendInterface {
     getAdditiveByENumber(eNumber: string): Promise<Additive>;
     getAdditiveById(id: bigint): Promise<Additive>;
     getAllAdditives(): Promise<Array<Additive>>;
-    parseIngredients(ingredientsText: string): Promise<Array<Additive>>;
+    parseIngredients(text: string): Promise<Array<Additive>>;
     searchAdditivesByName(searchTerm: string): Promise<Array<Additive>>;
     updateAdditive(id: bigint, name: string, eNumber: string | null, category: string, description: string, healthEffects: string, commonProducts: Array<string>, alternatives: Array<string>): Promise<boolean>;
 }

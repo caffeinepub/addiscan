@@ -16,8 +16,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Sora', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['General Sans', 'system-ui', 'sans-serif'],
+        display: ['Bricolage Grotesque', 'General Sans', 'system-ui', 'sans-serif'],
+        mono: ['Geist Mono', 'monospace'],
       },
       colors: {
         border: 'oklch(var(--border))',
@@ -94,9 +95,10 @@ export default {
         '2xl': 'calc(var(--radius) + 8px)',
       },
       boxShadow: {
-        xs: '0 1px 2px 0 rgba(0,0,0,0.05)',
-        card: '0 2px 8px 0 rgba(0,0,0,0.06), 0 1px 2px 0 rgba(0,0,0,0.04)',
-        'card-hover': '0 4px 16px 0 rgba(0,0,0,0.10), 0 2px 4px 0 rgba(0,0,0,0.06)',
+        xs: '0 1px 2px 0 rgba(0,0,0,0.2)',
+        card: '0 2px 8px 0 rgba(0,0,0,0.25), 0 1px 2px 0 rgba(0,0,0,0.15)',
+        'card-hover': '0 4px 20px 0 rgba(0,0,0,0.35), 0 2px 6px 0 rgba(0,0,0,0.2)',
+        glow: '0 0 20px oklch(0.78 0.16 75 / 0.2)',
       },
       keyframes: {
         'accordion-down': {
@@ -110,12 +112,17 @@ export default {
         'fade-in': {
           from: { opacity: '0', transform: 'translateY(8px)' },
           to: { opacity: '1', transform: 'translateY(0)' }
+        },
+        'slide-in': {
+          from: { opacity: '0', transform: 'translateX(-8px)' },
+          to: { opacity: '1', transform: 'translateX(0)' }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in': 'fade-in 0.3s ease-out',
+        'slide-in': 'slide-in 0.25s ease-out',
       }
     }
   },
