@@ -1,0 +1,22 @@
+{
+  "backend/main.mo": "Motoko actor that stores a map of food additives (with fields like name, E-number, category, health effects) and exposes functions to retrieve, search, filter, and parse ingredient text to identify matching additives.",
+  "feature_evidence.json": "Feature evidence report mapping each product feature (scan page, results display, encyclopedia, visual theme) to the source files and test IDs that implement them.",
+  "frontend-file-summaries.txt": "JSON document providing one-sentence descriptions of each frontend source file, serving as a quick reference for the purpose of every component, page, hook, and utility.",
+  "frontend/index.css": "Base Tailwind CSS file defining OKLCH CSS custom properties for the light and dark color themes used throughout the app.",
+  "frontend/index.html": "Minimal HTML entry point titled 'AddiScan' that mounts the React app into a root div and loads the main TypeScript module.",
+  "frontend/src/App.tsx": "Sets up TanStack Router with a root layout route wrapping ScanPage at '/' and EncyclopediaPage at '/encyclopedia'.",
+  "frontend/src/components/AdditiveCard.tsx": "Card component that displays a single additive's name, E-number, color-coded category badge, concern-level accent bar and badge, health notes panel, and common products list.",
+  "frontend/src/components/AdditiveDetailView.tsx": "Full detail view component for an additive showing its name, E-number, category badge, concern-level panel with health effects, description, and a list of common products.",
+  "frontend/src/components/Layout.tsx": "Defines the main app shell with a sticky header (logo + nav links), a main content area, and a footer with branding and attribution.",
+  "frontend/src/components/ResultsSummary.tsx": "Displays a summary card for scanned additives, showing counts broken down by high, moderate, and safe concern levels with appropriate icons and colors.",
+  "frontend/src/hooks/useActor.ts": "React hook that creates and caches an ICP backend actor (anonymous or authenticated) using TanStack Query, invalidating dependent queries when the identity changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides an Internet Identity authentication context and provider, exposing login/logout functions, identity state, and login status via a React context hook.",
+  "frontend/src/hooks/useQueries.ts": "Exports TanStack Query hooks for fetching, searching, and filtering additives from the backend, plus a mutation hook for parsing ingredient text.",
+  "frontend/src/index.css": "Global stylesheet that imports fonts, configures Tailwind, and defines OKLCH-based CSS custom properties for light/dark themes including concern-level color tokens.",
+  "frontend/src/lib/utils.ts": "Utility functions for class merging (cn), and deriving concern level, label, CSS classes, and category badge colors from additive data.",
+  "frontend/src/main.tsx": "App entry point that mounts the React root wrapped with QueryClientProvider and InternetIdentityProvider.",
+  "frontend/src/pages/EncyclopediaPage.tsx": "React page that displays a searchable, filterable encyclopedia of food additives fetched from the backend, with category filter buttons and a dialog for viewing full additive details.",
+  "frontend/src/pages/ScanPage.tsx": "React page that lets users paste or type a product ingredient list, submits it for analysis, and displays identified additives as cards with a summary banner.",
+  "frontend/tailwind.config.js": "Tailwind CSS configuration extending the default theme with custom fonts (Inter, Sora), OKLCH-based semantic color tokens, border radii, box shadows, and animation keyframes.",
+  "project_state.json": "JSON file tracking the project's current state, including version, architectural notes, existing implemented features, and pending new feature requests for the food additive scanner app."
+}

@@ -1,0 +1,153 @@
+{
+  "kind": "build_request",
+  "title": "Food Additive & Preservative Scanner App",
+  "projectName": "AddiScan",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a backend data store with a comprehensive database of common food preservatives and additives (E-numbers and common names), each including: name, E-number (if applicable), category (e.g. preservative, colorant, emulsifier, antioxidant, sweetener), description, potential health effects, and common products it appears in.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "tells what preservatives and additives are used in it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend stores at least 80 well-known additives and preservatives",
+        "Each entry includes name, E-number, category, description, and health notes",
+        "Backend exposes a query function to search additives by name or E-number",
+        "Backend exposes a function to retrieve all additives"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement a product ingredient text parsing function in the backend that accepts a raw ingredient list string (typed or pasted by the user after scanning the product label), extracts recognized additives and preservatives by matching against the stored database, and returns the matched entries.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "scan the products back part"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Function accepts a plain-text ingredient list string",
+        "Returns all matched additives/preservatives found in the string",
+        "Matching is case-insensitive and handles common abbreviations (e.g. 'E211', 'sodium benzoate')",
+        "Returns an empty array gracefully if no known additives are found"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Build a product scan page where users can input the ingredient text from the back of a product (via a large textarea input simulating what they would capture from scanning or typing the label), then submit it to receive a list of identified preservatives and additives.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "we just scan the products back part"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Page has a prominent textarea for pasting or typing ingredient text",
+        "A clear 'Analyze Ingredients' button submits the input",
+        "Loading state is shown while the backend processes the request",
+        "Results are displayed below the input after submission",
+        "Error state is shown if analysis fails or input is empty"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Display the analysis results as a list of additive cards, each showing: the additive name, E-number (if available), category badge (color-coded by category type), a short description, and a health effect note. Include a summary banner at the top showing how many additives/preservatives were found.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "tells what preservatives and additives are used in it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each matched additive is shown as a distinct card",
+        "Cards display name, E-number, category, description, and health notes",
+        "Category is shown as a color-coded badge (e.g. red for preservatives, yellow for colorants)",
+        "A summary banner shows the total count of detected additives",
+        "If no additives are found, a friendly 'No known additives detected' message is shown"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add an Additives Encyclopedia page that lists all additives stored in the backend, with search/filter functionality by name, E-number, or category. Clicking an additive shows its full detail view.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Encyclopedia page lists all additives from the backend",
+        "Users can search by name or E-number using a text input",
+        "Users can filter by category using a dropdown or tag buttons",
+        "Each list item is clickable and expands or navigates to full detail",
+        "Detail view shows all fields: name, E-number, category, description, health effects, common products"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Apply a clean, modern health-and-wellness visual theme throughout the app: use a fresh green and white color palette with warm neutral accents, clear sans-serif typography, and a minimal card-based layout. Use color coding to communicate safety/concern levels of additives (green = generally safe, amber = moderate concern, red = high concern).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Consistent green and white primary color scheme across all pages",
+        "Typography is clean and readable (sans-serif)",
+        "Additive cards use green/amber/red color coding for concern level",
+        "Layout is responsive and works well on both mobile and desktop screen sizes",
+        "Navigation between Scan and Encyclopedia pages is intuitive"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Generate and use a custom app logo: a minimalist icon of a magnifying glass over a leaf, suitable for the app header.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Logo is displayed in the app header/navbar",
+        "Logo loads from the static assets folder",
+        "Logo is appropriately sized for a navigation bar"
+      ]
+    }
+  ],
+  "constraints": [
+    "No camera or native barcode scanning APIs — ingredient text input must be manual (textarea/paste), clearly labeled as 'paste or type ingredients from the product label'",
+    "All additive/preservative data must be stored and served from the Motoko backend — no external food/ingredient APIs",
+    "Do not use any external databases or third-party services"
+  ],
+  "nonGoals": [
+    "Real-time camera barcode scanning or OCR",
+    "User accounts or saved scan history (unless added later)",
+    "Nutritional information beyond additives and preservatives",
+    "Product lookup by barcode number via external APIs",
+    "Allergen tracking beyond what is derivable from additive data"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimalist flat icon of a magnifying glass overlapping a green leaf, clean lines, white background, suitable for app logo (logo-icon.dim_128x128.png)"
+    ],
+    "edits": []
+  }
+}

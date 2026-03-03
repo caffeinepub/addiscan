@@ -1,0 +1,135 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Food Additive & Preservative Scanner App",
+  "requirements": [
+    {
+      "id": "REQ-3",
+      "summary": "Build a product scan page where users can input ingredient text and receive identified preservatives and additives",
+      "acceptanceCriteria": [
+        "Page has a prominent textarea for pasting or typing ingredient text",
+        "A clear 'Analyze Ingredients' button submits the input",
+        "Loading state is shown while the backend processes the request",
+        "Results are displayed below the input after submission",
+        "Error state is shown if analysis fails or input is empty"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ScanPage.tsx",
+          "operation": "create",
+          "description": "Create the product scan page component with a large textarea for ingredient input, an 'Analyze Ingredients' submit button, loading state management, and a results display area. Use the backend parseIngredients method to analyze the input text. Include error handling for empty input and failed requests."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the ScanPage into the app router as the default route at '/' so users land on the scan page when they open the app."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Display analysis results as additive cards with name, E-number, category badge, description, and health effects",
+      "acceptanceCriteria": [
+        "Each matched additive is shown as a distinct card",
+        "Cards display name, E-number, category, description, and health notes",
+        "Category is shown as a color-coded badge (e.g. red for preservatives, yellow for colorants)",
+        "A summary banner shows the total count of detected additives",
+        "If no additives are found, a friendly 'No known additives detected' message is shown"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/AdditiveCard.tsx",
+          "operation": "create",
+          "description": "Create an AdditiveCard component that displays a single additive with its name, E-number (if available), a color-coded category badge, description, and health effects. Use green/amber/red color coding based on health concern level keywords in healthEffects field."
+        },
+        {
+          "path": "frontend/src/components/ResultsSummary.tsx",
+          "operation": "create",
+          "description": "Create a ResultsSummary component that displays a banner showing the total count of detected additives above the results list. If no additives are found, show a friendly 'No known additives detected' message."
+        },
+        {
+          "path": "frontend/src/pages/ScanPage.tsx",
+          "operation": "modify",
+          "description": "Import and use ResultsSummary and AdditiveCard components to render the analysis results. Display ResultsSummary at the top, followed by a list of AdditiveCard components for each matched additive returned from the backend."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add an Additives Encyclopedia page listing all additives with search, filter, and detail view functionality",
+      "acceptanceCriteria": [
+        "Encyclopedia page lists all additives from the backend",
+        "Users can search by name or E-number using a text input",
+        "Users can filter by category using a dropdown or tag buttons",
+        "Each list item is clickable and expands or navigates to full detail",
+        "Detail view shows all fields: name, E-number, category, description, health effects, common products"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/EncyclopediaPage.tsx",
+          "operation": "create",
+          "description": "Create the encyclopedia page that fetches all additives using getAllAdditives on mount. Include a search input (calls searchAdditivesByName) and category filter dropdown (calls filterAdditivesByCategory). Display additives as a list of clickable items. On click, expand or navigate to show full detail (name, E-number, category, description, health effects, common products)."
+        },
+        {
+          "path": "frontend/src/components/AdditiveDetailView.tsx",
+          "operation": "create",
+          "description": "Create an AdditiveDetailView component that displays all fields of an additive: name, E-number, category badge, full description, health effects, and a list of common products. Use this component in the encyclopedia to show expanded details."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add a route for '/encyclopedia' that renders the EncyclopediaPage component. Update navigation to include a link to the encyclopedia page from the main navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply a clean, modern health-and-wellness visual theme with green/white palette and color-coded safety levels",
+      "acceptanceCriteria": [
+        "Consistent green and white primary color scheme across all pages",
+        "Typography is clean and readable (sans-serif)",
+        "Additive cards use green/amber/red color coding for concern level",
+        "Layout is responsive and works well on both mobile and desktop screen sizes",
+        "Navigation between Scan and Encyclopedia pages is intuitive"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Update global CSS to define a fresh green and white color palette with warm neutral accents. Set base typography to a clean sans-serif font. Define utility classes for green/amber/red concern level colors used in category badges and cards."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend the Tailwind theme to include custom colors for the health-and-wellness palette: primary green, white, warm neutrals, and concern level colors (green for safe, amber for moderate concern, red for high concern). Ensure responsive breakpoints are configured for mobile and desktop layouts."
+        },
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "create",
+          "description": "Create a Layout component with a navigation bar that includes the app logo and links to Scan and Encyclopedia pages. Apply the green and white theme styling. Use this layout to wrap all pages for consistent navigation and branding."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap all routes with the Layout component to provide consistent navigation and theming across the app."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Generate and use a custom app logo: a minimalist magnifying glass over a leaf icon",
+      "acceptanceCriteria": [
+        "Logo is displayed in the app header/navbar",
+        "Logo loads from the static assets folder",
+        "Logo is appropriately sized for a navigation bar"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Import and display the generated logo image from frontend/public/assets/generated/logo-icon.dim_128x128.png in the navigation bar header. Size it appropriately for the navbar (e.g., 32x32 or 40x40 pixels)."
+        }
+      ]
+    }
+  ]
+}

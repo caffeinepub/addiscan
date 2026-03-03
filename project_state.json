@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "A mobile app that allows users to scan the back of a product (barcode or ingredient label) and identifies the preservatives and additives used in that product.",
+  "architectural_notes": [
+    "Use camera-based barcode scanning (e.g., ML Kit or ZXing) to read product barcodes",
+    "Integrate with a food/product database API (e.g., Open Food Facts) to retrieve ingredient data"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Minimalist flat icon of a magnifying glass overlapping a green leaf, clean lines, white background, suitable for app logo (logo-icon.dim_128x128.png)",
+  "existing_features": [
+    {
+      "id": "feature-build-a-product-scan-page-where-users-can-input-the-ingredient-text-from-the-back-of-a-product-via-a-large-textarea-input-simulating-what-they-would-capture-from-scanning-or-typing-the-label-then-submit-it-to-receive-a-list-of-identified-preservatives-and-additives",
+      "title": "Build a product scan page where users can input the ingredient text from the back of a product (via a large textarea input simulating what they would capture from scanning or typing the label), then submit it to receive a list of identified preservatives and additives.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-the-analysis-results-as-a-list-of-additive-cards-each-showing-the-additive-name-e-number-if-available-category-badge-color-coded-by-category-type-a-short-description-and-a-health-effect-note-include-a-summary-banner-at-the-top-showing-how-many-additives-preservatives-were-found",
+      "title": "Display the analysis results as a list of additive cards, each showing: the additive name, E-number (if available), category badge (color-coded by category type), a short description, and a health effect note. Include a summary banner at the top showing how many additives/preservatives were found.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-additives-encyclopedia-page-that-lists-all-additives-stored-in-the-backend-with-search-filter-functionality-by-name-e-number-or-category-clicking-an-additive-shows-its-full-detail-view",
+      "title": "Add an Additives Encyclopedia page that lists all additives stored in the backend, with search/filter functionality by name, E-number, or category. Clicking an additive shows its full detail view.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-clean-modern-health-and-wellness-visual-theme-throughout-the-app-use-a-fresh-green-and-white-color-palette-with-warm-neutral-accents-clear-sans-serif-typography-and-a-minimal-card-based-layout-use-color-coding-to-communicate-safety-concern-levels-of-additives-green-generally-safe-amber-moderate-concern-red-high-concern",
+      "title": "Apply a clean, modern health-and-wellness visual theme throughout the app: use a fresh green and white color palette with warm neutral accents, clear sans-serif typography, and a minimal card-based layout. Use color coding to communicate safety/concern levels of additives (green = generally safe, amber = moderate concern, red = high concern).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-use-a-custom-app-logo-a-minimalist-icon-of-a-magnifying-glass-over-a-leaf-suitable-for-the-app-header",
+      "title": "Generate and use a custom app logo: a minimalist icon of a magnifying glass over a leaf, suitable for the app header.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Scan product barcode or back label to identify preservatives and additives",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Display detailed information about each preservative and additive found in the scanned product",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Create a backend data store with a comprehensive database of common food preservatives and additives (E-numbers and common names), each including: name, E-number (if applicable), category (e.g. preservative, colorant, emulsifier, antioxidant, sweetener), description, potential health effects, and common products it appears in.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Implement a product ingredient text parsing function in the backend that accepts a raw ingredient list string (typed or pasted by the user after scanning the product label), extracts recognized additives and preservatives by matching against the stored database, and returns the matched entries.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "AddiScan",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

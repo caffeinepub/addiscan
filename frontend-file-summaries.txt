@@ -1,0 +1,13 @@
+{
+  "frontend/src/index.css": "Global styles with a fresh green/cream OKLCH color palette, Inter + Sora fonts, concern-level utility classes (safe/moderate/high), and dark mode support.",
+  "frontend/tailwind.config.js": "Extended Tailwind config with custom font families (Inter, Sora), safe/moderate/high concern color tokens, card shadows, fade-in animation, and xl/2xl border radius variants.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations: getAllAdditives, searchAdditivesByName, filterAdditivesByCategory, and parseIngredients mutation.",
+  "frontend/src/lib/utils.ts": "Utility functions including cn() for class merging, getConcernLevel() to classify health effects, and getCategoryColor() for category badge styling.",
+  "frontend/src/components/AdditiveCard.tsx": "Card component displaying a single additive with concern-level accent bar, E-number badge, color-coded category badge, description, health notes panel, and common products list.",
+  "frontend/src/components/ResultsSummary.tsx": "Summary banner showing total detected additives with high/moderate/safe breakdown counts, or a friendly \"no additives found\" empty state.",
+  "frontend/src/components/AdditiveDetailView.tsx": "Full detail view for an additive showing name, E-number, category badge, concern level panel, description, and common products list.",
+  "frontend/src/components/Layout.tsx": "App shell with sticky header (logo + nav links), main content area, and footer with attribution and caffeine.ai link.",
+  "frontend/src/pages/ScanPage.tsx": "Main scan page with ingredient textarea input, example paste button, analyze/clear actions, loading/error states, and results grid using AdditiveCard and ResultsSummary.",
+  "frontend/src/pages/EncyclopediaPage.tsx": "Encyclopedia page with search input, category filter buttons, paginated additive list with concern indicators, and a Dialog detail view using AdditiveDetailView.",
+  "frontend/src/App.tsx": "TanStack Router setup with root layout route wrapping ScanPage (/) and EncyclopediaPage (/encyclopedia)."
+}

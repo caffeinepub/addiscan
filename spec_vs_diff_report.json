@@ -1,0 +1,57 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-03-02T13:11:16.583Z",
+  "summary": "The diff implements most requirements well: backend Motoko data store with additives, parsing function, frontend scan page with textarea, results cards with summary banner, encyclopedia page with search/filter/detail view, green/white health-wellness theme, and logo in header. One significant acceptance criterion is uncertain — the backend is truncated so we cannot confirm at least 80 additives are stored. The textarea label phrasing is partially met via placeholder text. All other core requirements appear implemented.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Backend stores at least 80 well-known additives and preservatives",
+      "reason": "The backend file is truncated after only ~8 additives are visible in the diff. There is no evidence the full list reaches 80+ entries. Cannot confirm this AC is met.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Internet Identity authentication integration with login/logout and identity management",
+      "reason": "The build request does not mention user accounts, authentication, or Internet Identity. The diff includes a full InternetIdentityProvider, useInternetIdentity hook, and actor authentication wiring, which was not requested.",
+      "evidence": [
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/main.tsx"
+      ]
+    },
+    {
+      "description": "Automated concern level classification via keyword matching on healthEffects text",
+      "reason": "REQ-6 requests color coding for safety/concern levels but does not specify an automated keyword-based classification algorithm. The implementation adds a getConcernLevel() utility that infers concern from health effect text keywords, going beyond what was specified.",
+      "evidence": [
+        "frontend/src/lib/utils.ts"
+      ]
+    }
+  ],
+  "confidence": 0.78,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AdditiveCard.tsx",
+    "frontend/src/components/AdditiveDetailView.tsx",
+    "frontend/src/components/Layout.tsx",
+    "frontend/src/components/ResultsSummary.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/utils.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/EncyclopediaPage.tsx",
+    "frontend/src/pages/ScanPage.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-build-a-product-scan-page-where-users-can-input-the-ingredient-text-from-the-back-of-a-product-via-a-large-textarea-input-simulating-what-they-would-capture-from-scanning-or-typing-the-label-then-submit-it-to-receive-a-list-of-identified-preservatives-and-additives",
+      "featureTitle": "Build a product scan page where users can input the ingredient text from the back of a product (via a large textarea input simulating what they would capture from scanning or typing the label), then submit it to receive a list of identified preservatives and additives.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/ScanPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-display-the-analysis-results-as-a-list-of-additive-cards-each-showing-the-additive-name-e-number-if-available-category-badge-color-coded-by-category-type-a-short-description-and-a-health-effect-note-include-a-summary-banner-at-the-top-showing-how-many-additives-preservatives-were-found",
+      "featureTitle": "Display the analysis results as a list of additive cards, each showing: the additive name, E-number (if available), category badge (color-coded by category type), a short description, and a health effect note. Include a summary banner at the top showing how many additives/preservatives were found.",
+      "files": [
+        "frontend/src/components/AdditiveCard.tsx",
+        "frontend/src/components/ResultsSummary.tsx",
+        "frontend/src/pages/ScanPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-additives-encyclopedia-page-that-lists-all-additives-stored-in-the-backend-with-search-filter-functionality-by-name-e-number-or-category-clicking-an-additive-shows-its-full-detail-view",
+      "featureTitle": "Add an Additives Encyclopedia page that lists all additives stored in the backend, with search/filter functionality by name, E-number, or category. Clicking an additive shows its full detail view.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AdditiveDetailView.tsx",
+        "frontend/src/pages/EncyclopediaPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-clean-modern-health-and-wellness-visual-theme-throughout-the-app-use-a-fresh-green-and-white-color-palette-with-warm-neutral-accents-clear-sans-serif-typography-and-a-minimal-card-based-layout-use-color-coding-to-communicate-safety-concern-levels-of-additives-green-generally-safe-amber-moderate-concern-red-high-concern",
+      "featureTitle": "Apply a clean, modern health-and-wellness visual theme throughout the app: use a fresh green and white color palette with warm neutral accents, clear sans-serif typography, and a minimal card-based layout. Use color coding to communicate safety/concern levels of additives (green = generally safe, amber = moderate concern, red = high concern).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/Layout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-generate-and-use-a-custom-app-logo-a-minimalist-icon-of-a-magnifying-glass-over-a-leaf-suitable-for-the-app-header",
+      "featureTitle": "Generate and use a custom app logo: a minimalist icon of a magnifying glass over a leaf, suitable for the app header.",
+      "files": [
+        "frontend/src/components/Layout.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
