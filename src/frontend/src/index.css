@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Green & Cream palette */
+    --background: 0.98 0.008 95;
+    --foreground: 0.18 0.025 160;
+
+    --card: 1 0 0;
+    --card-foreground: 0.18 0.025 160;
+
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.025 160;
+
+    --primary: 0.52 0.14 155;
+    --primary-foreground: 0.99 0 0;
+
+    --secondary: 0.93 0.03 145;
+    --secondary-foreground: 0.35 0.08 155;
+
+    --muted: 0.94 0.012 100;
+    --muted-foreground: 0.52 0.02 160;
+
+    --accent: 0.9 0.06 145;
+    --accent-foreground: 0.3 0.09 155;
+
+    --destructive: 0.58 0.22 25;
+    --destructive-foreground: 0.99 0 0;
+
+    --border: 0.88 0.02 145;
+    --input: 0.88 0.02 145;
+    --ring: 0.52 0.14 155;
+
+    /* Concern level tokens */
+    --safe: 0.55 0.14 155;
+    --safe-bg: 0.94 0.06 145;
+    --safe-fg: 0.28 0.1 155;
+
+    --moderate: 0.72 0.16 75;
+    --moderate-bg: 0.96 0.08 85;
+    --moderate-fg: 0.42 0.14 65;
+
+    --high: 0.6 0.22 25;
+    --high-bg: 0.97 0.06 25;
+    --high-fg: 0.42 0.18 25;
+
+    --chart-1: 0.52 0.14 155;
+    --chart-2: 0.72 0.16 75;
+    --chart-3: 0.6 0.22 25;
+    --chart-4: 0.55 0.18 220;
+    --chart-5: 0.65 0.2 300;
+
+    --sidebar: 0.96 0.015 145;
+    --sidebar-foreground: 0.18 0.025 160;
+    --sidebar-primary: 0.52 0.14 155;
+    --sidebar-primary-foreground: 0.99 0 0;
+    --sidebar-accent: 0.9 0.06 145;
+    --sidebar-accent-foreground: 0.3 0.09 155;
+    --sidebar-border: 0.88 0.02 145;
+    --sidebar-ring: 0.52 0.14 155;
+  }
+
+  .dark {
+    --background: 0.13 0.02 160;
+    --foreground: 0.95 0.01 145;
+
+    --card: 0.17 0.025 160;
+    --card-foreground: 0.95 0.01 145;
+
+    --popover: 0.2 0.025 160;
+    --popover-foreground: 0.95 0.01 145;
+
+    --primary: 0.62 0.16 155;
+    --primary-foreground: 0.1 0.02 160;
+
+    --secondary: 0.22 0.04 155;
+    --secondary-foreground: 0.85 0.04 145;
+
+    --muted: 0.22 0.03 160;
+    --muted-foreground: 0.6 0.03 155;
+
+    --accent: 0.25 0.05 155;
+    --accent-foreground: 0.85 0.04 145;
+
+    --destructive: 0.65 0.22 25;
+    --destructive-foreground: 0.99 0 0;
+
+    --border: 1 0 0 / 10%;
+    --input: 1 0 0 / 12%;
+    --ring: 0.62 0.16 155;
+
+    --safe: 0.62 0.16 155;
+    --safe-bg: 0.2 0.06 155;
+    --safe-fg: 0.75 0.12 145;
+
+    --moderate: 0.78 0.16 75;
+    --moderate-bg: 0.22 0.06 75;
+    --moderate-fg: 0.85 0.14 75;
+
+    --high: 0.68 0.22 25;
+    --high-bg: 0.22 0.06 25;
+    --high-fg: 0.85 0.18 25;
+
+    --sidebar: 0.17 0.025 160;
+    --sidebar-foreground: 0.95 0.01 145;
+    --sidebar-primary: 0.62 0.16 155;
+    --sidebar-primary-foreground: 0.1 0.02 160;
+    --sidebar-accent: 0.25 0.05 155;
+    --sidebar-accent-foreground: 0.85 0.04 145;
+    --sidebar-border: 1 0 0 / 10%;
+    --sidebar-ring: 0.62 0.16 155;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Sora", "Inter", system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .concern-safe {
+    background-color: oklch(var(--safe-bg));
+    color: oklch(var(--safe-fg));
+  }
+  .concern-moderate {
+    background-color: oklch(var(--moderate-bg));
+    color: oklch(var(--moderate-fg));
+  }
+  .concern-high {
+    background-color: oklch(var(--high-bg));
+    color: oklch(var(--high-fg));
+  }
+  .text-safe {
+    color: oklch(var(--safe));
+  }
+  .text-moderate {
+    color: oklch(var(--moderate));
+  }
+  .text-high {
+    color: oklch(var(--high));
+  }
+}
