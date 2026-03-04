@@ -28,6 +28,28 @@ export function useGetAllAdditives() {
           ),
         );
         all = await actor.getAllAdditives();
+      } else {
+        // Incrementally add any new seed entries not yet in the database
+        const existingNames = new Set(all.map((a) => a.name.toLowerCase()));
+        const missing = DEFAULT_ADDITIVES.filter(
+          (a) => !existingNames.has(a.name.toLowerCase()),
+        );
+        if (missing.length > 0) {
+          await Promise.all(
+            missing.map((a) =>
+              actor.addAdditive(
+                a.name,
+                a.eNumber,
+                a.category,
+                a.description,
+                a.healthEffects,
+                a.commonProducts,
+                a.alternatives,
+              ),
+            ),
+          );
+          all = await actor.getAllAdditives();
+        }
       }
 
       return all;

@@ -3,9 +3,9 @@ import Text "mo:core/Text";
 import Map "mo:core/Map";
 import Iter "mo:core/Iter";
 import Runtime "mo:core/Runtime";
-import Migration "migration";
 
-(with migration = Migration.run)
+
+
 actor {
   type Additive = {
     id : Nat;

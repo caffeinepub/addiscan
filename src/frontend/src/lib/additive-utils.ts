@@ -87,6 +87,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   acid: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
   leavening: "bg-lime-500/10 text-lime-400 border border-lime-500/20",
   humectant: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
+  bulking: "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
+  firming: "bg-stone-500/10 text-stone-400 border border-stone-500/20",
 };
 
 export function getCategoryColor(category: string): string {
